@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Yoco Test Payment</title>
+  <script src="https://js.yoco.com/sdk/v1/yoco-sdk-web.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: #f5f5f5;
+    }
+    button {
+      background-color: #4CAF50;
+      color: white;
+      padding: 15px 30px;
+      font-size: 18px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+    #message { margin-top: 20px; font-weight: bold; font-size: 16px; text-align: center; }
+  </style>
+</head>
+<body>
+  <h1>Yoco Test Payment</h1>
+  <button id="payButton">Pay 10 ZAR</button>
+  <div id="message"></div>
+
+  <script>
+    var yoco = new YocoSDK({
+      publicKey: 'pk_test_7e249cc0wE6ZogWbfe94'
+    });
+
+    document.getElementById('payButton').addEventListener('click', function() {
+      document.getElementById('message').textContent = 'Opening popup...';
+
+      yoco.showPopup({
+        amountInCents: 1000,
+        currency: 'ZAR',
+        name: 'Test Store',
+        description: '10 ZAR Test Payment',
+        callback: function(result) {
+          if (result.error) {
+            document.getElementById('message').textContent = 'Error: ' + result.error.message;
+            document.getElementById('message').style.color = 'red';
+          } else {
+            document.getElementById('message').textContent = '✅ Token received: ' + result.id;
+            document.getElementById('message').style.color = 'green';
+          }
+        }
+      });
+    });
+  </script>
+</body>
+</html>
